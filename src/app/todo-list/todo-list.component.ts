@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { StoreService } from '../store.service';
 import { Todo } from '../todo';
 import { Title } from '@angular/platform-browser';
@@ -12,13 +12,22 @@ export class TodoListComponent implements OnInit {
   newTodoText: string;
   allTodos: Todo[] = [];
   filter = 'All';
+  loaded = false;
   allChecked = true;
-  constructor(private storeService: StoreService, private title: Title) { }
+  oldTodos: {[key: number]: Todo} = {};
+
+  constructor(private storeService: StoreService, private title: Title, private ngZone: NgZone) {
+  }
 
   ngOnInit() {
     this.storeService.todo$.subscribe((data: Todo[]) => {
       this.allTodos = data;
       this.title.setTitle(`TODO (${this.remainCount}/${this.allTodos.length})`);
+    });
+
+    this.storeService.restore().subscribe(() => {
+      this.loaded = true;
+      this.ngZone.run(() => {});
     });
   }
 
@@ -47,25 +56,29 @@ export class TodoListComponent implements OnInit {
 
   editTodo(todo: Todo) {
     todo.editing = true;
+    this.oldTodos[todo.id] = {...todo};
     this.storeService.update(todo);
   }
 
-  stopEditing(todo: Todo, value: string) {
-    todo.title = value;
-    todo.editing = false;
-    this.storeService.update(todo);
-  }
+  // stopEditing(todo: Todo, value: string) {
+  //   todo.title = value;
+  //   todo.editing = false;
+  //   this.storeService.update(todo);
+  // }
 
   updateEditingTodo(todo: Todo, value: string) {
+    if (!value) {
+      value = this.oldTodos[todo.id].title;
+    }
     todo.title = value;
     todo.editing = false;
     this.storeService.update(todo);
   }
 
-  cancelEditingTodo(todo: Todo) {
-    todo.editing = false;
-    this.storeService.update(todo);
-  }
+  // cancelEditingTodo(todo: Todo) {
+  //   todo.editing = false;
+  //   this.storeService.update(todo);
+  // }
 
   remove(todo: Todo) {
     this.storeService.remove(todo.id);
@@ -84,7 +97,7 @@ export class TodoListComponent implements OnInit {
   }
 
   setFilter(f?: string) {
-     this.filter = f;
+    this.filter = f;
   }
 
   markAll(state: boolean) {

@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Todo } from './todo';
+
+declare const chrome: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
-  private todos: Todo[] = [];
-  private storeKey = 'todo.store.key';
   todo$ = new BehaviorSubject<Todo[]>([]);
+  private todos: Todo[] = [];
+  private storeKey = 'todoStoreKey';
 
   constructor() {
-    this.restore();
+    // this.restoreFromLocal();
   }
 
 
@@ -43,12 +45,36 @@ export class StoreService {
     this.save();
   }
 
+  restore() {
+    return new Observable((obs) => {
+      if (chrome.storage) {
+        chrome.storage.sync.get(this.storeKey, (res: any) => {
+          obs.next();
+          const str = res[this.storeKey] || '[]';
+          this.todos = JSON.parse(str);
+          this.save();
+          console.log('Restored from cloud.');
+        });
+      } else {
+        obs.next();
+      }
+    });
+  }
+
   private save() {
-    localStorage.setItem(this.storeKey, JSON.stringify(this.todos));
+    const content = JSON.stringify(this.todos);
+    // localStorage.setItem(this.storeKey, content);
+    if (chrome.storage) {
+      const obj = {};
+      obj[this.storeKey] = content;
+      chrome.storage.sync.set(obj, () => {
+        console.log('Synced to cloud.');
+      });
+    }
     this.push();
   }
 
-  private restore() {
+  private restoreFromLocal() {
     const dataStr = localStorage.getItem(this.storeKey) || '[]';
     this.todos = JSON.parse(dataStr);
     this.push();
