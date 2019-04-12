@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../store.service';
 import { Todo } from '../todo';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-todo-list',
@@ -12,11 +13,12 @@ export class TodoListComponent implements OnInit {
   allTodos: Todo[] = [];
   filter = 'All';
   allChecked = true;
-  constructor(private storeService: StoreService) { }
+  constructor(private storeService: StoreService, private title: Title) { }
 
   ngOnInit() {
     this.storeService.todo$.subscribe((data: Todo[]) => {
       this.allTodos = data;
+      this.title.setTitle(`TODO (${this.remainCount}/${this.allTodos.length})`);
     });
   }
 
