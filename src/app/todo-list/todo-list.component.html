@@ -1,0 +1,37 @@
+<div class="appwrapper">
+  <section class="todoapp">
+    <header class="header">
+      <h1>todos</h1>
+      <input class="new-todo" placeholder="What needs to be done?" autofocus="" [(ngModel)]="newTodoText"
+             (keyup.enter)="newTodoText && addTodo()">
+    </header>
+    <section class="main" *ngIf="todos.length > 0">
+      <input id="toggle-all" class="toggle-all" type="checkbox" [(ngModel)]="allChecked" (click)="markAll(allChecked)">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <li *ngFor="let todo of todos" [class.completed]="todo.completed" [class.editing]="todo.editing">
+          <div class="view">
+            <input class="toggle" type="checkbox" (click)="toggleCompletion(todo)" [checked]="todo.completed">
+            <label (dblclick)="editTodo(todo)">{{todo.title}}</label>
+            <button class="destroy" (click)="remove(todo)"></button>
+          </div>
+          <input class="edit"
+                 *ngIf="todo.editing"
+                 [ngModel]="todo.title"
+                 #editedtodo
+                 (keyup.enter)="updateEditingTodo(todo, editedtodo.value)"
+                 (keyup.escape)="updateEditingTodo(todo, editedtodo.value)">
+        </li>
+      </ul>
+    </section>
+    <footer class="footer" *ngIf="allTodos.length > 0">
+      <span class="todo-count"><strong>{{remainCount}}</strong> {{remainCount == 1 ? 'item' : 'items'}} left</span>
+      <ul class="filters">
+        <li><a [class.selected]="filter === 'All'" (click)="setFilter('All')">All</a></li>
+        <li><a [class.selected]="filter === 'Active'" (click)="setFilter('Active')">Active</a></li>
+        <li><a [class.selected]="filter === 'Completed'" (click)="setFilter('Completed')">Completed</a></li>
+      </ul>
+      <button class="clear-completed" *ngIf="completedCount > 0" (click)="removeCompleted()">Clear completed</button>
+    </footer>
+  </section>
+</div>

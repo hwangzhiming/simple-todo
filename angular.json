@@ -13,16 +13,19 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/todo",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {"glob": "**/*", "input": "src/ext", "output": "./"}
             ],
             "styles": [
+              "node_modules/todomvc-common/base.css",
+              "node_modules/todomvc-app-css/index.css",
               "src/styles.css"
             ],
             "scripts": []
