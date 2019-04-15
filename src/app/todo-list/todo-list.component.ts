@@ -32,16 +32,18 @@ export class TodoListComponent implements OnInit {
   }
 
   get todos() {
+    let rs: Todo[] = [];
     if (!this.allTodos || !this.allTodos.length) {
-      return [];
+      rs = [];
     }
     if (this.filter === 'Completed') {
-      return this.allTodos.filter(x => x.completed);
+      rs = this.allTodos.filter(x => x.completed);
     } else if (this.filter === 'Active') {
-      return this.allTodos.filter(x => !x.completed);
+      rs = this.allTodos.filter(x => !x.completed);
     } else {
-      return this.allTodos;
+      rs = this.allTodos;
     }
+    return rs.sort((a, b) => a.id < b.id ? -1 : 1).sort((a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1);
   }
 
   addTodo() {
