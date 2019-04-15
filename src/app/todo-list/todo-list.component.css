@@ -13,3 +13,7 @@ a {
 .edit {
  font-size: 16px;
 }
+
+.todoapp h1 {
+  font-size: 80px!important;
+}
