@@ -22,7 +22,7 @@ export class TodoListComponent implements OnInit {
   ngOnInit() {
     this.storeService.todo$.subscribe((data: Todo[]) => {
       this.allTodos = data;
-      this.title.setTitle(`TODO (${this.remainCount}/${this.allTodos.length})`);
+      this.title.setTitle(`Simple Todo (${this.remainCount}/${this.allTodos.length})`);
     });
 
     this.storeService.restore().subscribe(() => {

@@ -1,20 +1,24 @@
 {
+  "name": "Simple Todo",
+  "short_name": "SimpleToDo",
+  "description": "Tiny simple task management tool that helps to track your daily job, it will help sync data between all your browsers.",
+  "version": "1.1.0",
   "manifest_version": 2,
-  "name": "TODO",
-  "description": "Simple local task management tool",
-  "version": "1.0",
+  "author":"hwangzhiming@gmail.com",
   "icons": {
     "16": "img/icon16.png",
+    "19": "img/icon19.png",
     "32": "img/icon32.png",
+    "38": "img/icon38.png",
     "48": "img/icon48.png",
     "128": "img/icon128.png"
   },
   "browser_action": {
     "default_icon": {
-      "16": "img/icon16.png",
-      "32": "img/icon32.png"
+      "19": "img/icon19.png",
+      "38": "img/icon38.png"
     },
-    "default_title": "TODO",
+    "default_title": "Simple Todo",
     "default_popup": "index.html"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
