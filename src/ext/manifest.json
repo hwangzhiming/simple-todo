@@ -19,7 +19,7 @@
       "38": "img/icon38.png"
     },
     "default_title": "Simple Todo",
-    "default_popup": "index.html"
+    "default_popup": "popup.html"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "web_accessible_resources": [

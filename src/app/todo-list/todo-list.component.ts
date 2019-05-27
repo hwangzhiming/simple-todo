@@ -2,6 +2,8 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { StoreService } from '../store.service';
 import { Todo } from '../todo';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+declare const window: any;
 
 @Component({
   selector: 'app-todo-list',
@@ -15,7 +17,6 @@ export class TodoListComponent implements OnInit {
   loaded = false;
   allChecked = true;
   oldTodos: {[key: number]: Todo} = {};
-
   constructor(private storeService: StoreService, private title: Title, private ngZone: NgZone) {
   }
 
@@ -29,6 +30,10 @@ export class TodoListComponent implements OnInit {
       this.loaded = true;
       this.ngZone.run(() => {});
     });
+  }
+
+  search(keyword: string) {
+    window.location.href = `https://google.com/search?q=${encodeURIComponent(keyword)}`;
   }
 
   get todos() {

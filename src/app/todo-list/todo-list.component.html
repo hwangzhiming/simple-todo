@@ -1,13 +1,15 @@
 <div class="appwrapper" *ngIf="loaded">
+  <div class="search google-search" *ngIf="!isPopup">
+      <input type="text" class="new-search" placeholder="Google search" name="q" #input (keyup.enter)="search(input.value)">
+  </div>
   <section class="todoapp">
     <header class="header">
-      <h1>SIMPLE TODO</h1>
       <input class="new-todo" placeholder="What needs to be done?" autofocus="" [(ngModel)]="newTodoText"
              (keyup.enter)="newTodoText && addTodo()">
     </header>
     <section class="main" *ngIf="todos.length > 0">
       <input id="toggle-all" class="toggle-all" type="checkbox" [(ngModel)]="allChecked" (click)="markAll(allChecked)">
-      <label for="toggle-all">Mark all as complete</label>
+      <label for="toggle-all" title="Mark all as complete">Mark all as complete</label>
       <ul class="todo-list">
         <li *ngFor="let todo of todos" [class.completed]="todo.completed" [class.editing]="todo.editing">
           <div class="view">
@@ -34,4 +36,11 @@
       <button class="clear-completed" *ngIf="completedCount > 0" (click)="removeCompleted()">Clear completed</button>
     </footer>
   </section>
+  <footer class="info">
+    <p>
+      <a href="http://simple-todo.topming.com/" target="_blank">About</a>&nbsp;|&nbsp;
+      <a href="http://simple-todo.topming.com/" target="_blank">Privacy</a>&nbsp;|&nbsp;
+      <a href="https://google.com/" target="_blank">Google</a>
+    </p>
+  </footer>
 </div>
