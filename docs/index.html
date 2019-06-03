@@ -25,6 +25,7 @@
 
     <!-- Theme Styles -->
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+    <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/fbnejdjopgchgkbofbiajjbaineikacm">
   </head>
   <!-- End Head -->
 
@@ -45,7 +46,7 @@
           <div class="collapse navbar-collapse" id="navbarTogglerDemo05">
             <ul class="navbar-nav ml-auto mt-1 mt-lg-0">
               <li class="nav-item active mx-2">
-                <a class="nav-link" href="#!">
+                <a class="nav-link" href="#!" onclick="chrome.webstore.install(); return false;" id="install-button">
                   <i class="fab fa-chrome"></i> Add to Chrome
                 </a>
               </li>
@@ -142,7 +143,11 @@
 
     <!-- Theme Settings and Calls -->
     <script src="assets/js/global.js"></script>
-
+    <script>
+      if (chrome.app.isInstalled) {
+        document.getElementById('install-button').style.display = 'none';
+      }
+    </script>
 
   </body>
   <!-- End Body -->
